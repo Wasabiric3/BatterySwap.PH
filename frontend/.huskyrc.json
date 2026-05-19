@@ -1,0 +1,6 @@
+{
+  "hooks": {
+    "pre-commit": "npx lint-staged",
+    "pre-push": "npm --prefix frontend test --silent"
+  }
+}

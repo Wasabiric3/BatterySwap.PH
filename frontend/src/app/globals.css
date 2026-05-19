@@ -1,0 +1,297 @@
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root,
+  .dark {
+    --background: 0 0% 3%;         /* #080808 */
+    --foreground: 0 0% 100%;       /* #ffffff */
+    --accent-green: 163 100% 38%;  /* #00C48C */
+    --accent-yellow: 48 100% 48%;  /* #F5C400 */
+    --border: 0 0% 100% / 0.15;
+    --text-muted: 0 0% 100% / 0.5;
+
+    /* Semantic Colors */
+    --card: 0 0% 10%;              /* #1a1a1a */
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 100%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+  }
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::selection {
+  background: hsl(var(--accent-green));
+  color: hsl(var(--background));
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FLAT CARD — Clean border, no blur
+   ══════════════════════════════════════════════════════════════ */
+
+.card-brutal {
+  background: hsl(var(--card) / 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+              0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.35s ease,
+              background 0.35s ease,
+              box-shadow 0.35s ease;
+}
+
+.card-brutal:hover {
+  background: hsl(var(--card) / 0.35);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+              0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   INK ACCENT — Left-border label accent (replaces pill badges)
+   ══════════════════════════════════════════════════════════════ */
+
+.ink-accent {
+  border-left: 2px solid hsl(var(--accent-green));
+  padding-left: 0.65rem;
+  display: inline-block;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STATION CARD — Flat with hover border accent
+   ══════════════════════════════════════════════════════════════ */
+
+.station-card {
+  background: hsl(var(--card) / 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+              0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: background 0.35s ease,
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+}
+
+.station-card:hover {
+  background: hsl(var(--card) / 0.35);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+              0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.station-card .book-btn {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: hsl(var(--foreground));
+  transition: background-color 0.3s ease,
+              color 0.3s ease,
+              border-color 0.3s ease;
+}
+
+.station-card:hover .book-btn {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+  border-color: hsl(var(--foreground));
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HERO CTA BUTTON — Bottom right, pill
+   ══════════════════════════════════════════════════════════════ */
+
+.hero-cta {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: hsl(var(--foreground));
+  color: hsl(var(--background));
+}
+
+.hero-cta:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 30px hsl(var(--foreground) / 0.1);
+}
+
+.hero-cta .ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: hsl(var(--background) / 0.15);
+  transform: scale(0);
+  animation: ripple-expand 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes ripple-expand {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EDITORIAL STEP NUMBER
+   ══════════════════════════════════════════════════════════════ */
+
+.step-number {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: hsl(var(--foreground) / 0.07);
+  position: absolute;
+  top: 1rem;
+  left: 1.25rem;
+  user-select: none;
+  letter-spacing: -0.02em;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   REDUCED MOTION — Accessibility
+   ══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FLOATING PARTICLES
+   ══════════════════════════════════════════════════════════════ */
+
+@keyframes particle-float {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+.particle {
+  position: absolute;
+  border-radius: 9999px;
+  animation: particle-float linear infinite;
+  will-change: transform, opacity;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCROLL NAVBAR — Glass states
+   ══════════════════════════════════════════════════════════════ */
+
+.navbar-glass {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background-color 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+}
+
+.navbar-glass.scrolled {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCROLL BACKGROUND LAYERS — Hero aurora + pulse
+   ══════════════════════════════════════════════════════════════ */
+
+.hero-aurora {
+  background: radial-gradient(ellipse at top, hsla(163, 100%, 38%, 0.05) 0%, transparent 60%),
+              linear-gradient(to bottom, hsl(var(--background)), hsl(var(--card)));
+}
+
+.hero-glow-pulse {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  width: 700px;
+  height: 350px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, hsla(163, 100%, 38%, 0.06) 0%, transparent 70%);
+  filter: blur(60px);
+  animation: hero-pulse 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes hero-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CUSTOM SCROLLBAR
+   ══════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--foreground) / 0.1);
+  border-radius: 5px;
+  border: 2px solid hsl(var(--background));
+}
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--foreground) / 0.25); }
+
+html {
+  scrollbar-color: hsl(var(--foreground) / 0.15) hsl(var(--background));
+  scrollbar-width: thin;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   KEYBOARD FOCUS RING
+   ══════════════════════════════════════════════════════════════ */
+
+:focus { outline: none; }
+
+:focus-visible {
+  outline: 2px solid hsl(var(--accent-green));
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   THREE.JS LOADING SKELETON
+   ══════════════════════════════════════════════════════════════ */
+
+.dotted-surface-loading {
+  position: fixed;
+  inset: 0;
+  z-index: -20;
+  background: radial-gradient(ellipse at center, hsla(163, 100%, 38%, 0.05), transparent 70%);
+  animation: pulse-bg 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-bg {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}

@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+dist
+build
+coverage
+.husky
+.git
+.vscode
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+public/**/*
+frontend/public/**/*
